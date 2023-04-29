@@ -1,5 +1,4 @@
 import express from "express";
-import path from "path";
 const app = express();
 
 import { dirname } from "path";
@@ -12,8 +11,11 @@ import "express-async-errors";
 import connectDB from "./db/connect.js";
 import cors from "cors";
 
+import userRouter from "./routes/User.js";
+
 app.use(cors());
 app.use(express.json());
+app.use(userRouter);
 
 const port = process.env.PORT || 5000;
 
