@@ -1,4 +1,6 @@
 import React from 'react'
+import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
 
 export default function NavBar() {
     return (
@@ -31,9 +33,8 @@ export default function NavBar() {
                             </li> */}
                         </ul>
                         <form class="d-flex gap-3">
-                            {/* <input class="form-control me-sm-2" type="search" placeholder="Search" /> */}
-                            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" >Sign-in</button>
-                            <button type="button" class="btn btn-outline-primary">Sign-up</button>
+                            <LoginButton />
+                            <LogoutButton />
                         </form>
                     </div>
                 </div>

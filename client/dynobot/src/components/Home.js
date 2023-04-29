@@ -1,15 +1,7 @@
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 
-import NavBar from "./NavBar";
-import { AuthContext } from "../App";
-
 export default function Home() {
-  const { state, dispatch } = useContext(AuthContext);
-
-  if (!state.isLoggedIn) {
-    return <Navigate to="/login" />;
-  }
 
   return (
     <>
