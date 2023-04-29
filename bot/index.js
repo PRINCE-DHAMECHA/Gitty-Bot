@@ -63,4 +63,14 @@ module.exports = (app) => {
     }
   });
 
+  app.on("pull_request.closed", async (context) => {
+    var userObject = await authenticate(context);
+    if(userObject == 0){
+      return;
+    }
+    var pull_requestCloseMerged = userObject.pull_requestCloseMerged
+    var pull_requestClosedNotMerged = userObject.pull_requestClosedNotMerged
+    return await pull_requestController.pull_requestClosed(context, pull_requestCloseMerged,pull_requestClosedNotMerged);
+  });
+
 };
