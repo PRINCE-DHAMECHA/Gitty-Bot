@@ -1,7 +1,8 @@
-import React from "react";
-import NavBar from "./NavBar";
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
 
 export default function Home() {
+
   return (
     <>
       <div className="mx-auto container-fluid col-8 mt-5">

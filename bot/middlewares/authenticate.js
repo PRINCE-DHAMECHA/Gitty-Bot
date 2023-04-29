@@ -1,12 +1,30 @@
-module.export = async function getUser(context){
-    // context will contain the payload of the event that was triggered
-    let username = context.payload.issue.user.login;
+require('dotenv').config()
 
-    // fetch the user from the our application's database
-    // enpoint that will return user if the user is in the database
-    let response = await fetch();
-    let data = await response.json();
+async function getUser(context) {
+  console.log("Inside any things");
+  var responseData;
+  console.log(context.payload.repository.owner.login);
+  try {
+    const SERVER_URL = process.env["SERVER_URL"]
+    const response = await fetch(
+      `${SERVER_URL}username=${context.payload.repository.owner.login}`,
+      {
+        method: "GET",
+      }
+    );
+    responseData = await response.json();
+    console.log(response.status);
+    if (response.status != 200) {
+      console.log("User Not Found IG", responseData);
+      return 0;
+    }
+  } catch (error) {
+    console.log("Error in the response", error);
+  }
+  return responseData[0];
+};
 
-    return data;
 
+module.exports = {
+  getUser
 }

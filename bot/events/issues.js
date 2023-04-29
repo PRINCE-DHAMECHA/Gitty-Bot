@@ -1,5 +1,5 @@
+// implemented By Vashishth Patel
 const issueCreate = async (context, issueGreetMessage) => {
-//   var author = context.payload.sender.login;
   const params = context.issue({
     body: issueGreetMessage,
   });
@@ -47,16 +47,16 @@ const issueEdit = async (context) => {
   });
 };
 
-const issueAddLabel = async (context) => {
+// implemented By Vashishth Patel
+const issueAddLabel = async (context, issueAddLabel) => {
   var repo = context.payload.repository.name;
   var issue_number = context.payload.issue.number;
   var owner = context.payload.repository.owner.login;
-  // add label on issue when edited
   return await context.octokit.issues.addLabels({
     owner,
     repo,
     issue_number,
-    labels: ["review_needed"],
+    labels: [issueAddLabel],
   });
 };
 
