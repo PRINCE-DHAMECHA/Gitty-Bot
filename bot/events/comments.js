@@ -41,6 +41,7 @@ const chatWithComment = async (context, userData) => {
 
   for(var i = 0; i  < actions.length; i++){
     var obj = actions[i];
+    console.log(obj.key, " ", obj.value)
     if(obj.key === body){
       const params = context.issue({
         body: obj.value,
@@ -48,7 +49,7 @@ const chatWithComment = async (context, userData) => {
       return await context.octokit.issues.createComment(params);
     }
   }
-  consoler.log("Nothing for party 🎉")
+  console.log("Nothing for party 🎉")
   return;
 };
 

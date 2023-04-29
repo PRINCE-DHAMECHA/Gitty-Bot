@@ -13,55 +13,66 @@ module.exports = (app) => {
     if (userObject == 0) {
       return;
     }
-    var issueGreetMessage = userObject.issueCreate
-    var issueAddLabel = userObject.issueAddLabel
-    console.log(issueGreetMessage, " ", issueAddLabel)
+    var issueGreetMessage = userObject.issueCreate;
+    var issueAddLabel = userObject.issueAddLabel;
+    console.log(issueGreetMessage, " ", issueAddLabel);
     await issueController.issueCreate(context, issueGreetMessage);
-    return await issueController.issueAddLabel(context, issueAddLabel)
+    return await issueController.issueAddLabel(context, issueAddLabel);
   });
 
-
-
-
   app.on("pull_request.opened", async (context) => {
-    var userObject = await getUser(context);
-    if(userObject == 0){
+    var userObject = await getUser.getUser(context);
+    if (userObject == 0) {
       return;
     }
-    var pull_requestCreateMessage = userObject.pull_requestCreate
-    var pull_requestAddLabel = userObject.pull_requestAddLabel
-    await pull_requestController.pull_requestCreated(context, pull_requestCreateMessage);
-    return pull_requestController.pull_requestAddLabel(context, pull_requestAddLabel);
-    
+    var pull_requestCreateMessage = userObject.pull_requestCreate;
+    var pull_requestAddLabel = userObject.pull_requestAddLabel;
+    await pull_requestController.pull_requestCreated(
+      context,
+      pull_requestCreateMessage
+    );
+    return pull_requestController.pull_requestAddLabel(
+      context,
+      pull_requestAddLabel
+    );
   });
 
   app.on("pull_request.synchronize", async (context) => {
-    var userObject = await authenticate(context);
-    if(userObject == 0){
+    var userObject = await getUser.getUser(context);
+    if (userObject == 0) {
       return;
     }
-    var pull_requestAddLabelOnSynchronize = userObject.pull_requestAddLabelOnSynchronize
-    return await pull_requestController.pull_requestAddLabelOnSynchronize(context, pull_requestAddLabelOnSynchronize);
-  });
-  
-  app.on("pull_request.reopened", async (context) => {
-    var userObject = await authenticate(context);
-    if(userObject == 0){
-      return;
-    }
-    var pull_requestReopended = userObject.pull_requestReopended
-    return await pull_requestController.pull_requestReopended(context, pull_requestReopended);
+    var pull_requestAddLabelOnSynchronize =
+      userObject.pull_requestAddLabelOnSynchronize;
+    return await pull_requestController.pull_requestAddLabelOnSynchronize(
+      context,
+      pull_requestAddLabelOnSynchronize
+    );
   });
 
-  app.on("issue_comment.created",async (context) => {
-    var userObject = await authenticate(context);
-    if(userObject == 0){
+  app.on("pull_request.reopened", async (context) => {
+    var userObject = await getUser.getUser(context);
+    if (userObject == 0) {
+      return;
+    }
+    var pull_requestReopended = userObject.pull_requestReopended;
+    return await pull_requestController.pull_requestReopended(
+      context,
+      pull_requestReopended
+    );
+  });
+
+  app.on("issue_comment.created", async (context) => {
+    var userObject = await getUser.getUser(context);
+    if (userObject == 0) {
       return;
     }
     var comment = context.payload.comment.body;
-    if(comment == "/list"){
+    if (comment == "/list") {
       return await pull_requestController.pull_requestListFiles(context);
+    }else{
+      // chatting with bot ->:)
+      return await commentController.chatWithComment(context, userObject);
     }
   });
-
 };
