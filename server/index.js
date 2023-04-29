@@ -15,7 +15,7 @@ import userRouter from "./routes/User.js";
 
 app.use(cors());
 app.use(express.json());
-app.use(userRouter);
+app.use("/user", userRouter);
 
 const port = process.env.PORT || 5000;
 
