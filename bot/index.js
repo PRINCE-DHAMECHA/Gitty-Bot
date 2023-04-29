@@ -1,4 +1,4 @@
-let authenticate = require("./middlewares/authenticate");
+let getUser = require("./middlewares/authenticate");
 var issueController = require("./events/issues");
 var commentController = require("./events/comments");
 var pull_requestController = require("./events/pull_requests");
@@ -9,12 +9,13 @@ module.exports = (app) => {
 
   // on opening the issue
   app.on("issues.opened", async (context) => {
-    var userObject = await authenticate(context);
+    var userObject = await getUser.getUser(context);
     if (userObject == 0) {
       return;
     }
     var issueGreetMessage = userObject.issueCreate
     var issueAddLabel = userObject.issueAddLabel
+    console.log(issueGreetMessage, " ", issueAddLabel)
     await issueController.issueCreate(context, issueGreetMessage);
     return await issueController.issueAddLabel(context, issueAddLabel)
   });
@@ -23,7 +24,7 @@ module.exports = (app) => {
 
 
   app.on("pull_request.opened", async (context) => {
-    var userObject = await authenticate(context);
+    var userObject = await getUser(context);
     if(userObject == 0){
       return;
     }
