@@ -1,3 +1,4 @@
+
 const reactOnIssueCommentCreate = async (context) => {
   var content;
   var body = context.payload.comment.body;
@@ -33,6 +34,7 @@ const reactOnIssueCommentEdit = async (context) => {
     content,
   });
 };
+
 
 module.exports = {
   reactOnIssueCommentCreate,
