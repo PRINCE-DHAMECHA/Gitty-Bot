@@ -54,6 +54,29 @@ const pull_requestAddLabelOnSynchronize = async (context, label) => {
     });
 }
 
+const pull_requestClosed = async (context, merged, notmerged) => {
+    var owner = context.payload.repository.owner.login;
+    var repo = context.payload.repository.name;
+    var pull_number = context.payload.pull_request.number;
+    var pull_state = context.payload.pull_request.merged;
+
+    if(!pull_state){
+        return await context.octokit.issues.createComment({
+            owner,
+            repo,
+            pull_number,
+            notmerged
+        });
+    }else{
+        return await context.octokit.issues.createComment({
+            owner,
+            repo,
+            pull_number,
+            merged
+        });
+    }
+}
+
 const pull_requestListFiles = async (context) => {
     var repo = context.payload.repository.name;
     var pull_number = context.payload.pull_request.number;
@@ -110,5 +133,6 @@ module.export = {
     pull_requestAddLabel,
     pull_requestReopended,
     pull_requestAddLabelOnSynchronize,
-    pull_requestListFiles
+    pull_requestListFiles,
+    pull_requestClosed
 }
