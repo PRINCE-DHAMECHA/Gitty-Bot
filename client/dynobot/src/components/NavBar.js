@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const NavBar = () => {
+export default function NavBar() {
     return (
         <>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -19,7 +19,7 @@ export const NavBar = () => {
                             <li class="nav-item">
                                 <a class="nav-link" href="#">About</a>
                             </li>
-                            <li class="nav-item dropdown">
+                            {/* <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="#">Action</a>
@@ -28,7 +28,7 @@ export const NavBar = () => {
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">Separated link</a>
                                 </div>
-                            </li>
+                            </li> */}
                         </ul>
                         <form class="d-flex gap-3">
                             {/* <input class="form-control me-sm-2" type="search" placeholder="Search" /> */}
