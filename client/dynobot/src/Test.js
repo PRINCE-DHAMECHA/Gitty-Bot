@@ -8,7 +8,7 @@ export default function Test() {
     return (
         <>
             {/* <NavBar /> */}
-            <Home />
+            {/* <Home /> */}
         </>
     )
 }
