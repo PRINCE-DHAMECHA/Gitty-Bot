@@ -1,4 +1,4 @@
-const User = require("../models/User");
+import User from "../models/User.js";
 
 const getAction = async (req, res) => {
   const { userName } = req.body;
