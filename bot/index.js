@@ -19,6 +19,16 @@ module.exports = (app) => {
     return await issueController.issueAddLabel(context, issueAddLabel)
   });
 
+  app.on("pull_request.opened", async (context) => {
+    var userObject = await authenticate(context);
+    if(userObject == 0){
+      return;
+    }
+    var pull_requestCreateMessage = userObject.pull_requestCreate
+    await pull_requestController.pull_requestCreated(context, pull_requestCreateMessage);
+    return pull_requestController.pull_requestAddLabel(context, "pending");
+    
+  });
   
 
 };
