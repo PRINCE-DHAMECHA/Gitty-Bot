@@ -1,27 +1,24 @@
-let authenticate = require('./middlewares/authenticate');
+let authenticate = require("./middlewares/authenticate");
+var issueController = require("./events/issues");
+var commentController = require("./events/comments");
+var pull_requestController = require("./events/pull_requests");
 
 module.exports = (app) => {
   // Your code here
-  app.log('Yay! The app was loaded!')
+  app.log("Yay! The app was loaded!");
 
-  // example of probot responding 'Hello World' to a new issue being opened
-  app.on('issues.opened', async context => {
-    
-    // authenticate the user
-    let response = await authenticate(context);
-    if(response==0){
-        return context.octokit.issues.createComment(context.issue({body: 'You are not authorized to comment on this issue'}));
+  // on opening the issue
+  app.on("issues.opened", async (context) => {
+    var userObject = await authenticate(context);
+    if (userObject == 0) {
+      return;
     }
-    else{
-      // `context` extracts information from the event, which can be passed to
-      // GitHub API calls. This will return:
-      //   {owner: 'yourname', repo: 'yourrepo', number: 123, body: 'Hello World!}
-      const params = context.issue({body: 'Hello World!'})
+    var issueGreetMessage = userObject.issueCreate
+    var issueAddLabel = userObject.issueAddLabel
+    await issueController.issueCreate(context, issueGreetMessage);
+    return await issueController.issueAddLabel(context, issueAddLabel)
+  });
 
-      // Post a comment on the issue
-      return context.octokit.issues.createComment(params)
-    }
-    
-    
-  })
-}
+  
+
+};
