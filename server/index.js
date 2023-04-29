@@ -13,6 +13,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import fetch from "node-fetch";
 
+import userRouter from "./routes/User.js";
+
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
