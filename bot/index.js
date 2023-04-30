@@ -1,13 +1,13 @@
 let getUser = require("./middlewares/authenticate");
-var issueController = require("./events/issues");
-var commentController = require("./events/comments");
-var pull_requestController = require("./events/pull_requests");
+let issueController = require("./events/issues");
+let commentController = require("./events/comments");
+let pull_requestController = require("./events/pull_requests");
 
 module.exports = (app) => {
   // Your code here
   app.log("Yay! The app was loaded!");
 
-  // on opening the issue
+  // done
   app.on("issues.opened", async (context) => {
     var userObject = await getUser.getUser(context);
     if (userObject == 0) {
@@ -20,6 +20,39 @@ module.exports = (app) => {
     return await issueController.issueAddLabel(context, issueAddLabel);
   });
 
+  // done
+  app.on("issues.edited", async (context) => {
+    var userObject = await getUser.getUser(context);
+    if (userObject == 0) {
+      return;
+    }
+    if(userObject.issueEdit)
+      return await issueController.issueEdit(context);
+  });
+  // done
+  app.on("issues.closed", async (context) => {
+    var userObject = await getUser.getUser(context);
+    if (userObject == 0) {
+      return;
+    }
+
+    var issueClosedCompleted = userObject.issueClosedCompleted
+    var issueClosedNotCompleted = userObject.issueClosedNotCompleted
+    return await issueController.issueClose(context, issueClosedCompleted, issueClosedNotCompleted);
+  })
+  // done
+  app.on("issues.reopened", async (context) => {
+    var userObject = await getUser.getUser(context);
+    if (userObject == 0) {
+      return;
+    }
+
+    var issueReopened = userObject.issueReopened
+    return await issueController.issueReopened(context, issueReopened);
+  })
+
+
+  // done
   app.on("pull_request.opened", async (context) => {
     var userObject = await getUser.getUser(context);
     if (userObject == 0) {
@@ -37,6 +70,22 @@ module.exports = (app) => {
     );
   });
 
+  // done
+  app.on("pull_request.closed", async (context) => {
+    var getData = await getUser.getUser(context);
+    if (getData == 0) {
+      return;
+    }
+    var MessageMerged = getData.pull_requestCloseMerged;
+    var MessageNot = getData.pull_requestClosedNotMerged;
+    return await pull_requestController.pull_requestClosed(
+      context,
+      MessageMerged,
+      MessageNot
+    );
+  });
+
+  // done
   app.on("pull_request.synchronize", async (context) => {
     var userObject = await getUser.getUser(context);
     if (userObject == 0) {
@@ -50,29 +99,56 @@ module.exports = (app) => {
     );
   });
 
+  // done
   app.on("pull_request.reopened", async (context) => {
     var userObject = await getUser.getUser(context);
     if (userObject == 0) {
       return;
     }
-    var pull_requestReopended = userObject.pull_requestReopended;
-    return await pull_requestController.pull_requestReopended(
-      context,
-      pull_requestReopended
-    );
+    try {
+      // console.log(userObject);
+      // console.log(context.payload.number)
+      var pull_requestReopended = userObject.pull_requestReopened;
+      return await pull_requestController.pull_requestReopened(
+        context,
+        pull_requestReopended
+      );
+    } catch (error) {
+      console.log(error);
+    }
   });
 
+  // done
   app.on("issue_comment.created", async (context) => {
     var userObject = await getUser.getUser(context);
     if (userObject == 0) {
       return;
     }
     var comment = context.payload.comment.body;
-    if (comment == "/list") {
-      return await pull_requestController.pull_requestListFiles(context);
-    }else{
+    if (comment == "/assign") {
+      if (userObject.issueAssign)
+        return await issueController.issueAssign(context);
+      else return;
+    } else if (comment == "/list") {
+      if (userObject.pull_requestListFiles)
+        return await pull_requestController.pull_requestListFiles(context);
+      else return;
+    } else {
+      if (userObject.reactOnIssueCommentCreate)
+        await commentController.reactOnIssueCommentCreate(context);
       // chatting with bot ->:)
       return await commentController.chatWithComment(context, userObject);
     }
+  });
+
+  // done
+  app.on("issue_comment.edited", async (context) => {
+    var userObject = await getUser.getUser(context);
+    if (userObject == 0) {
+      return;
+    }
+    if (userObject.reactOnIssueCommentEdit)
+      return await commentController.reactOnIssueCommentEdit(context);
+    else return;
   });
 };
