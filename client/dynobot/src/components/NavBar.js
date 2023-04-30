@@ -23,21 +23,9 @@ export default function NavBar() {
                             <li className="nav-item">
                                 <a className="nav-link" href="#">About</a>
                             </li>
-                            {/* <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                                <div className="dropdown-menu">
-                                    <a className="dropdown-item" href="#">Action</a>
-                                    <a className="dropdown-item" href="#">Another action</a>
-                                    <a className="dropdown-item" href="#">Something else here</a>
-                                    <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="#">Separated link</a>
-                                </div>
-                            </li> */}
                         </ul>
                         <form className="d-flex gap-3">
                             {!isAuthenticated ? (<LoginButton />) : (<LogoutButton />)}
-                            {/* <LoginButton />
-                            <LogoutButton /> */}
                         </form>
                     </div>
                 </div>
@@ -48,6 +36,10 @@ export default function NavBar() {
 
 function LoginButton() {
     const { loginWithRedirect, isAuthenticated } = useAuth0();
+    function handleLogin() {
+        loginWithRedirect();
+    }
+    
     return (
         !isAuthenticated && (
             <button className="btn btn-outline-dark my-2 my-sm-0" onClick={() => loginWithRedirect()}>Sign-in</button>

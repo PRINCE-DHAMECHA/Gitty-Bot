@@ -21,20 +21,28 @@ const addAction = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  const { username, email, name } = req.body;
   const user = await User.create({
-    name: "Jimy",
-    email: "vasuforyou481210@gmail.com",
-    username: "j-imy",
+    name: name,
+    email: email,
+    username: username,
     ...context,
   });
   return res.status(200).json(user);
 };
 
+// name: "Jimy",
+// email: "vasuforyou481210@gmail.com",
+// username: "j-imy",
+// ...context,
+
+
 const updateMessage = async (req, res) => {
   const { action, message, username } = req.body;
   console.log(action, message, username);
   const user = await User.findOne({ username });
-  console.log(user);
+  console.log("user: ", user);
+
   if (user[action] || user[action] === false) {
     const updatedUser = await User.updateOne(
       { username },
