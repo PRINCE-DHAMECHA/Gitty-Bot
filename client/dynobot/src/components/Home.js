@@ -31,14 +31,16 @@ export default function Home() {
   const [newContent, setNewContent] = useState(false);
   const [loading, setloading] = useState(true);
   console.log(user);
+
   const authFetch = axios.create({
     baseURL: "http://localhost:5000",
   });
+
   useEffect(() => {
     const getData = async () => {
       try {
         const userDataTemp = await authFetch.get(
-          "/user/get?username=PRINCE-DHAMECHA"
+          "/user/get?username=" + user.nickname
         );
         console.log(userDataTemp.data[0]);
         setUserData(userDataTemp.data[0]);
@@ -49,8 +51,12 @@ export default function Home() {
     };
     getData();
   }, []);
+
+
+
   const handleUpdate = async (e) => {
-    console.log(1);
+
+    console.log(user.nickname);
 
     if (
       currentState === "issueAssign" ||
@@ -131,8 +137,8 @@ export default function Home() {
               console.log(e.target.value);
             }}
           >
-            {context.map((e) => {
-              return <option key={e}>{e}</option>;
+            {context && context.map((e, i) => {
+              return <option key={i}>{e}</option>;
             })}
           </select>
           {booleanVal ? (
@@ -177,8 +183,8 @@ export default function Home() {
                 // setCurrentStateMessage(e.target.value);
               }}
             >
-              {userData.actions.map((e) => {
-                return <option key={e.key}>{e.key}</option>;
+              {userData.actions && userData.actions.map((e, i) => {
+                return <option key={i}>{e.key}</option>;
               })}
             </select>
             {/* <textarea value={userData.actions[]}></textarea> */}
