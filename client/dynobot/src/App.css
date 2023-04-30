@@ -103,9 +103,23 @@ body {
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
   text-align: var(--bs-body-text-align);
-  background-color: var(--bs-body-bg);
+  /* background-color: var(--bs-body-bg); */
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent
+}
+
+html {
+  background: url('../public/gradient-3.png') no-repeat center center fixed;
+  /* background:url('../public/assets/giphy.gif') no-repeat center center fixed; */
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  /* background: rgb(2,0,36); */
+  /* background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%,rgba(0,212,255,1) 100%); */
+
+  /*   filter: blur(8px); */
+  /*   -webkit-filter: blur(8px); */
 }
 
 /* hr {
@@ -132,6 +146,10 @@ h6 {
   margin-bottom: .5rem;
   font-weight: 500;
   line-height: 1.2
+}
+
+.bg-gradient {
+  background-color: rgba(255, 255, 255, 0.4) !important
 }
 
 .h1,
