@@ -18,11 +18,12 @@ Many things:
 - Assigning the issue on commenting the command in the issue or pull.
 - Sending message when pull or issue is closed based on the issue or pull state.
 - React on some good messages which have some good keywords.
-- Much more...
+- Users can add custom messages to reply to the issues or pull requests.
 
 ## Accomplishments that we're proud of
-- We got the new idea about how can we interact in GitHub through this bot 
+- We got the new idea about how can we interact in GitHub through this bot.
 - We can now be able to explore it more, so as to automate the works in the repositories using this bot
+- Users can pre-define the custom messages which can help them to mark their identity with the help of **Gitty-Bot**
 
 ## What we learned
 - We have learned the use of webhooks, to interact with GitHub
@@ -38,11 +39,14 @@ Many things:
 - Aut0 refresh lost problem :https://community.auth0.com/t/why-is-authentication-lost-after-refreshing-my-single-page-application/56276
 
 ## Built With
+
 <div align="center">
   <img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"/>
   <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"/>
   <img src="https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white"/>
   <img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white"/>
   <img src="https://img.shields.io/badge/Replit-DD1200?style=for-the-badge&logo=Replit&logoColor=white"/>
- 
+  <img src=" https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white"/>
+  <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" />
+  
 </div>
