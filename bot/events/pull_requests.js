@@ -1,96 +1,107 @@
-const pull_requestCreated = (context, message) => {
+const pull_requestCreated = async (context, Message) => {
+  var author = context.payload.sender.login;
+  var repo = context.payload.repository.name;
+  var issue_number = context.payload.pull_request.number;
+  var owner = context.payload.repository.owner.login;
 
-    let repo = context.payload.repository.name;
-    let owner = context.payload.repository.owner.login;
-    let pull_number = context.payload.pull_request.number;
+  // var body = `Hey **${author}** 🙋🏻‍♂️<br/>Thanks for contributing to this repository :octocat: Your contribution is greatly appreciated and will help us to improve our project. We will review your pull_request as soon as possible. ✨`;
+  var body = Message;
 
-    return context.octokit.issues.createComment({
-        owner,
-        repo,
-        pull_number,
-        message,
-    });
+  // Post a comment on the opening pull request
+  return await context.octokit.issues.createComment({
+    owner,
+    repo,
+    issue_number,
+    body,
+  });
+};
 
-}
+const pull_requestClosed = async (context, MessageMerged, MessageNotMerged) => {
+  var author = context.payload.sender.login;
+  var repo = context.payload.repository.name;
+  var issue_number = context.payload.pull_request.number;
+  var owner = context.payload.repository.owner.login;
+  var pull_state = context.payload.pull_request.merged;
 
-const pull_requestAddLabel = (context, label) => {
-    var repo = context.payload.repository.name;
-    var pull_number = context.payload.pull_request.number;
-    var owner = context.payload.repository.owner.login;
+  var body;
 
-    return context.octokit.issues.addLabels({
-        owner,
-        repo,
-        pull_number,
-        labels: [label],
-    });
-}
+  if (!pull_state) {
+    //   body = `Hey **${author}** 🙋🏻‍♂️<br/>Thanks for giving time to this repository :octocat: ✨<br/>See you soon 🎊`;
+    body = MessageNotMerged;
+  } else {
+    //   body = `Hey **${author}** 🙋🏻‍♂️<br/>Hureeeeh🎉🥳 Your pull request has been merged :octacat: **Thanks for contributing** ✨`;
+    body = MessageMerged;
+  }
 
-const pull_requestReopended = async (context, message) => {
+  // Post a comment on the opening pull request
+  return await context.octokit.issues.createComment({
+    owner,
+    repo,
+    issue_number,
+    body,
+  });
+};
 
-    var owner = context.payload.repository.owner.login;
-    var repo = context.payload.repository.name;
-    var pull_number = context.payload.pull_request.number;
+const pull_requestReopened = async (context, Message) => {
+  // var author = context.payload.sender.login;
+  var repo = context.payload.repository.name;
+  var issue_number = context.payload.pull_request.number;
+  var owner = context.payload.repository.owner.login;
+  // var pull_state = context.payload.pull_request.state;
 
-    return await context.ocktokit.issues.createComment({
-        owner,
-        repo,
-        pull_number,
-        message
-    });
+  // var body = `Hey **${author}** 🙋🏻‍♂️<br/>Thanks for reopening this pull request :octocat:`;
+  var body = Message;
 
-}
+  // Post a comment on the opening pull request
+  return await context.octokit.issues.createComment({
+    owner,
+    repo,
+    issue_number,
+    body,
+  });
+};
+
+const pull_requestAddLabel = async (context, label) => {
+  var repo = context.payload.repository.name;
+  var issue_number = context.payload.pull_request.number;
+  var owner = context.payload.repository.owner.login;
+  // add label on pull request when created
+  return await context.octokit.issues.addLabels({
+    owner,
+    repo,
+    issue_number,
+    labels: [label],
+  });
+};
 
 const pull_requestAddLabelOnSynchronize = async (context, label) => {
-    var owner = context.payload.repository.owner.login;
-    var repo = context.payload.repository.name;
-    var pull_number = context.payload.pull_request.number;
+  var repo = context.payload.repository.name;
+  var issue_number = context.payload.pull_request.number;
+  var owner = context.payload.repository.owner.login;
+  // add label on pull request when edited
+  return await context.octokit.issues.addLabels({
+    owner,
+    repo,
+    issue_number,
+    labels: [label],
+  });
+};
 
-    return await context.octokit.issues.addLabels({
-        owner,
-        repo,
-        pull_number,
-        labels: [label],
-    });
-}
-
-const pull_requestClosed = async (context, merged, notmerged) => {
-    var owner = context.payload.repository.owner.login;
-    var repo = context.payload.repository.name;
-    var pull_number = context.payload.pull_request.number;
-    var pull_state = context.payload.pull_request.merged;
-
-    if(!pull_state){
-        return await context.octokit.issues.createComment({
-            owner,
-            repo,
-            pull_number,
-            notmerged
-        });
-    }else{
-        return await context.octokit.issues.createComment({
-            owner,
-            repo,
-            pull_number,
-            merged
-        });
-    }
-}
-
+// Done
 const pull_requestListFiles = async (context) => {
-    var repo = context.payload.repository.name;
-    var pull_number = context.payload.pull_request.number;
-    var owner = context.payload.repository.owner.login;
+  var repo = context.payload.repository.name;
+  var pull_number = context.payload.issue.number;
+  var owner = context.payload.repository.owner.login;
 
-    var response = await context.octokit.pulls.listFiles({
-        owner,
-        repo,
-        pull_number
-    });
+  var response = await context.octokit.pulls.listFiles({
+    owner,
+    repo,
+    pull_number,
+  });
 
-    var files = response.data;
+  var files = response.data;
 
-    var body = `<table>
+  var body = `<table>
   <tbody>
   <tr>
   <th><a href="#">File Name</a></th>
@@ -125,14 +136,12 @@ const pull_requestListFiles = async (context) => {
     issue_number,
     body,
   });
-
-}
-
-module.export = {
-    pull_requestCreated,
-    pull_requestAddLabel,
-    pull_requestReopended,
-    pull_requestAddLabelOnSynchronize,
-    pull_requestListFiles,
-    pull_requestClosed
-}
+};
+module.exports = {
+  pull_requestCreated,
+  pull_requestAddLabel,
+  pull_requestReopened,
+  pull_requestAddLabelOnSynchronize,
+  pull_requestListFiles,
+  pull_requestClosed,
+};

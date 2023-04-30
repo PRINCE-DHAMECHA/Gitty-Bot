@@ -60,8 +60,8 @@ const issueAddLabel = async (context, issueAddLabel) => {
   });
 };
 
-const issueClose = async (context) => {
-  var author = context.payload.sender.login;
+const issueClose = async (context, issueClosedCompleted, issueClosedNotCompleted) => {
+  // var author = context.payload.sender.login;
   var repo = context.payload.repository.name;
   var issue_number = context.payload.issue.number;
   var owner = context.payload.repository.owner.login;
@@ -70,9 +70,11 @@ const issueClose = async (context) => {
   var body;
 
   if (issue_state == "completed") {
-    body = `Hey **${author}** 🙋🏻‍♂️<br/>Hureeeeh🎉🥳 Your issue has been closed and **resolved**. 🎉 <br/> **Thanks for contributing** ✨`;
+    // body = `Hey **${author}** 🙋🏻‍♂️<br/>Hureeeeh🎉🥳 Your issue has been closed and **resolved**. 🎉 <br/> **Thanks for contributing** ✨`;
+    body = issueClosedCompleted
   } else if (issue_state == "not_planned") {
-    body = `Hey **${author}** 🙋🏻‍♂️<br/>Thanks for giving time to this repository :octocat: ✨<br/>This issue won't fixed.😶<br/> **See you soon** 🎊`;
+    // body = `Hey **${author}** 🙋🏻‍♂️<br/>Thanks for giving time to this repository :octocat: ✨<br/>This issue won't fixed.😶<br/> **See you soon** 🎊`;
+    body = issueClosedNotCompleted
   }
 
   // Post a comment on the opening pull request
@@ -84,16 +86,17 @@ const issueClose = async (context) => {
   });
 };
 
-const issueReopened = async (context) => {
-  var author = context.payload.sender.login;
+const issueReopened = async (context, issueReopened) => {
+  // var author = context.payload.sender.login;
   var repo = context.payload.repository.name;
   var issue_number = context.payload.issue.number;
   var owner = context.payload.repository.owner.login;
-  var issue_state = context.payload.issue.state_reason;
+  // var issue_state = context.payload.issue.state_reason;
 
   var body;
 
-  body = `Hey **${author}** 🙋🏻‍♂️<br/>Thanks for reopening the issue :octocat:✨<br/>Hope this issue will be fixed.😋🎊`;
+  // body = `Hey **${author}** 🙋🏻‍♂️<br/>Thanks for reopening the issue :octocat:✨<br/>Hope this issue will be fixed.😋🎊`;
+  body = issueReopened
 
   // Post a comment on the opening pull request
   return await context.octokit.issues.createComment({
