@@ -23,5 +23,4 @@ export const context = {
   pull_requestListFiles: true,
   reactOnIssueCommentCreate: true,
   reactOnIssueCommentEdit: true,
-  // pull_requestAddLabelOnSynchronize: "label added",
 };
