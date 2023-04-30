@@ -30,6 +30,8 @@ export default function Home() {
   const [isChange, setIsChange] = useState(false);
   const [newContent, setNewContent] = useState(false);
   const [loading, setloading] = useState(true);
+
+  
   console.log(user);
 
   const authFetch = axios.create({
@@ -37,10 +39,11 @@ export default function Home() {
   });
 
   useEffect(() => {
+    console.log("Request goes", user)
     const getData = async () => {
       try {
         const userDataTemp = await authFetch.get(
-          "/user/get?username=" + user.nickname
+          "/user/get?username=j-imy"
         );
         console.log(userDataTemp.data[0]);
         setUserData(userDataTemp.data[0]);
@@ -56,7 +59,7 @@ export default function Home() {
 
   const handleUpdate = async (e) => {
 
-    console.log(user.nickname);
+    // console.log(user.nickname);
 
     if (
       currentState === "issueAssign" ||
@@ -69,19 +72,19 @@ export default function Home() {
       const res = await authFetch.post("/user/update", {
         action: currentState,
         message: checked,
-        username: user.nickname,
+        username: "j-imy",
       });
     } else {
       const res = await authFetch.post("/user/update", {
         action: currentState,
         message: newContent,
-        username: user.nickname,
+        username: "j-imy",
       });
     }
     const getData = async () => {
       try {
         const userDataTemp = await authFetch.get(
-          "/user/get?username=PRINCE-DHAMECHA"
+          "/user/get?username=j-imy"
         );
         console.log(userDataTemp.data[0]);
         setUserData(userDataTemp.data[0]);
@@ -100,7 +103,9 @@ export default function Home() {
           <div
             className="col-md-3 rounded m-3 border-3 border-bottom"
             style={{ border: "1px solid #dee2e6" }}
-          ></div>
+          >
+            <img className="w-100 rounded" src="https://user-images.githubusercontent.com/132129890/235353963-93092806-5674-4468-a679-4b6fa30d5bca.png" />
+          </div>
           <div
             className="col-md-6 rounded m-3 border-3 border-bottom p-3"
             style={{ border: "1px solid #dee2e6" }}
@@ -165,7 +170,7 @@ export default function Home() {
           )}
           <div className="block">
             <button
-              className="block mt-2"
+              className="block mt-2 btn btn-outline-primary"
               onClick={handleUpdate}
               disabled={isChange ? false : true}
             >
