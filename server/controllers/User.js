@@ -34,7 +34,8 @@ const updateMessage = async (req, res) => {
   const { action, message, username } = req.body;
   console.log(action, message, username);
   const user = await User.findOne({ username });
-  if (user[action]) {
+  console.log(user);
+  if (user[action] || user[action] === false) {
     const updatedUser = await User.updateOne(
       { username },
       { $set: { [action]: message } }
@@ -49,9 +50,7 @@ const updateMessage = async (req, res) => {
         break;
       }
     }
-    console.log(temp);
     const updatedUser = await User.updateOne({ username }, { actions: temp });
-    console.log(2, updatedUser);
     return res.status(200).json(updatedUser);
   }
 };
